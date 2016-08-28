@@ -1024,15 +1024,15 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText )
     {
       default:
       case PTE_NONE:
-        prefix = "[S] ";
+        prefix = "[^3S^7] ";
         break;
 
       case PTE_ALIENS:
-        prefix = "[A] ";
+        prefix = "[^1A^7] ";
         break;
 
       case PTE_HUMANS:
-        prefix = "[H] ";
+        prefix = "[^4H^7] ";
     }
   }
   else
@@ -1183,15 +1183,15 @@ static void Cmd_SayArea_f( gentity_t *ent )
     {
       default:
       case PTE_NONE:
-        prefix = "[S] ";
+        prefix = "[^3S^7] ";
         break;
 
       case PTE_ALIENS:
-        prefix = "[A] ";
+        prefix = "[^1A^7] ";
         break;
 
       case PTE_HUMANS:
-        prefix = "[H] ";
+        prefix = "[^4H^7] ";
     }
   }
   else

@@ -159,6 +159,7 @@ vmCvar_t  g_forceAutoSelect;
 vmCvar_t  g_privateMessages;
 vmCvar_t  g_decolourLogfiles;
 vmCvar_t  g_minLevelToSpecMM1;
+vmCvar_t  g_scrimMode;
 vmCvar_t  g_publicSayadmins;
 vmCvar_t  g_myStats;
 vmCvar_t  g_antiSpawnBlock;
@@ -336,6 +337,7 @@ static cvarTable_t   gameCvarTable[ ] =
   { &g_myStats, "g_myStats", "1", CVAR_ARCHIVE, 0, qtrue  },
   { &g_publicSayadmins, "g_publicSayadmins", "1", CVAR_ARCHIVE, 0, qfalse  },    
   { &g_minLevelToSpecMM1, "g_minLevelToSpecMM1", "0", CVAR_ARCHIVE, 0, qfalse  },
+  { &g_scrimMode, "g_scrimMode", "0", CVAR_ARCHIVE, 0, qfalse },
   { &g_antiSpawnBlock, "g_antiSpawnBlock", "0", CVAR_ARCHIVE, 0, qfalse  },
   
   { &g_devmapKillerHP, "g_devmapKillerHP", "0", CVAR_ARCHIVE, 0, qtrue  },

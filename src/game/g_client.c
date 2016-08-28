@@ -1466,6 +1466,11 @@ void ClientBegin( int clientNum )
 
   trap_SendServerCommand( -1, va( "print \"%s" S_COLOR_WHITE " entered the game\n\"", client->pers.netname ) );
 
+  if( g_scrimMode.integer == 1 )
+  {
+   ADMP( va("^5Scrim mode is enabled for levels < %i\n", g_minLevelToSpecMM1.integer) );
+  }
+
   // name can change between ClientConnect() and ClientBegin()
   G_admin_namelog_update( client, qfalse );
 

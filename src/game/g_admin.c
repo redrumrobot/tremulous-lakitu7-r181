@@ -192,7 +192,6 @@ g_admin_cmd_t g_admin_cmds[ ] =
       ""
     },
 
-
     {"putteam", G_admin_putteam, "putteam",
       "move a player to a specified team",
       "[^3name|slot#^7] [^3h|a|s^7]"
@@ -229,6 +228,11 @@ g_admin_cmd_t g_admin_cmds[ ] =
        ""
     },
 
+    {"scrim", G_admin_scrim, "scrim",
+      "toggles scrim mode",
+      "[on|off] (min. level to talk, default 4)",
+    },
+
     {"setlevel", G_admin_setlevel, "setlevel",
       "sets the admin level of a player",
       "[^3name|slot#|admin#^7] [^3level^7]"
@@ -241,13 +245,14 @@ g_admin_cmd_t g_admin_cmds[ ] =
 
     {"spec999", G_admin_spec999, "spec999",
       "move 999 pingers to the spectator team",
-      ""},
+      ""
+	},
       
      //kev: a bit of a hack, but there is no real point to
      //creating a new admin flag for this, so i stole it from !help
     {"specme", G_admin_putmespec, "specme",
         "moves you to the spectators",
-    ""
+      ""
     },
 
     {"subnetban", G_admin_subnetban, "subnetban",
@@ -261,7 +266,8 @@ g_admin_cmd_t g_admin_cmds[ ] =
 
     {"time", G_admin_time, "time",
       "show the current local server time",
-      ""},
+      ""
+	},
 
     {"unban", G_admin_unban, "ban",
       "unbans a player specified by the slot as seen in showbans",
@@ -5088,6 +5094,69 @@ qboolean G_admin_L1(gentity_t *ent, int skiparg ){
   }
  
   trap_SendConsoleCommand( EXEC_APPEND,va( "!setlevel %d 1;", pids[ 0 ] ) );
+  return qtrue;
+}
+
+qboolean G_admin_scrim(gentity_t *ent, int skiparg )
+{
+  char state[4], *minlevel;
+  int tmp = 0;
+
+   if( G_SayArgc() < 2 + skiparg )
+   {
+     ADMP( "^3!scrim: ^7usage: !scrim [on|off] (min. level to talk, default 4)\n" );
+     return qfalse;
+   }
+
+   G_SayArgv( 1 + skiparg, state, sizeof( state ) );
+
+   if( G_SayArgc() > 2 + skiparg )
+   {
+     minlevel = G_SayConcatArgs( 2 + skiparg );
+     tmp = atoi(minlevel);
+   }
+
+   if( tmp == 0 )
+     {
+         minlevel = "4";
+     }
+
+   if( !Q_stricmp(state, "on") )
+   {
+       if( g_scrimMode.integer == 1 )
+       {
+           ADMP( "^3!scrim: ^7scrim mode is already enabled.\n" );
+           return qfalse;
+       } else if( g_scrimMode.integer == 0 )
+       {
+           AP( va( "print \"^3!scrim: ^7%s ^7turned scrim mode ^2on^7 for levels < %s\n\"", ( ent ) ? G_admin_adminPrintName( ent ) : "console" , minlevel ) );
+           trap_Cvar_Set( "g_scrimMode", "1" );
+           trap_Cvar_Set( "g_privateMessages", "0" );
+           trap_Cvar_Set( "g_minLevelToSpecMM1", minlevel );
+           trap_Cvar_Set( "g_minLevelToJoinTeam", minlevel );
+           return qtrue;
+       }
+   }
+   else if( !Q_stricmp(state, "off") )
+   {
+       if( g_scrimMode.integer == 0 )
+       {
+           ADMP( "^3!scrim: ^7scrim mode is already disabled.\n" );
+           return qfalse;
+       } else if( g_scrimMode.integer == 1 )
+       {
+           AP( va( "print \"^3!scrim: ^7%s ^7turned scrim mode ^1off^7\n\"", ( ent ) ? G_admin_adminPrintName( ent ) : "console" ) );
+           trap_Cvar_Set( "g_scrimMode", "0" );
+           trap_Cvar_Set( "g_privateMessages", "1" );
+           trap_Cvar_Set( "g_minLevelToSpecMM1", "0" );
+           trap_Cvar_Set( "g_minLevelToJoinTeam", "0" );
+           return qtrue;
+       }
+   } else {
+       ADMP( "^3!scrim: ^7usage: !scrim [on|off] (min. level to talk, default 4)\n" );
+       return qfalse;
+   }
+
   return qtrue;
 }
 
